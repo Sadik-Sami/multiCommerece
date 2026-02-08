@@ -38,6 +38,7 @@ lerna-debug.log*
 
 # Better-T-Stack
 .alchemy
+migrations
 
 # Testing
 coverage
