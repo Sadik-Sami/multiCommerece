@@ -40,6 +40,10 @@ lerna-debug.log*
 .alchemy
 migrations
 
+# Allow Drizzle migrations in the db package
+!packages/db/src/migrations/
+!packages/db/src/migrations/**
+
 # Testing
 coverage
 .nyc_output
