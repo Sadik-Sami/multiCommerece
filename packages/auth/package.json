@@ -1,0 +1,24 @@
+{
+  "name": "@multiCommerece/auth",
+  "type": "module",
+  "exports": {
+    ".": {
+      "default": "./src/index.ts"
+    },
+    "./*": {
+      "default": "./src/*.ts"
+    }
+  },
+  "scripts": {},
+  "dependencies": {
+    "@multiCommerece/db": "workspace:*",
+    "@multiCommerece/env": "workspace:*",
+    "better-auth": "catalog:",
+    "dotenv": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@multiCommerece/config": "workspace:*",
+    "typescript": "catalog:"
+  }
+}

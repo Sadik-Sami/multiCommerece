@@ -1,0 +1,3 @@
+{
+  "extends": "@multiCommerece/config/tsconfig.base.json"
+}
