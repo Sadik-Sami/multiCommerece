@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import {
@@ -60,7 +61,8 @@ const SOCIAL_LINKS = [
   { label: "Twitter", icon: Twitter },
 ] as const;
 
-const STICKY_TRIGGER = 80;
+const COMPACT_ENTER_SCROLL_Y = 120;
+const COMPACT_EXIT_SCROLL_Y = 72;
 
 function TopStripDropdown({ label, items }: { label: string; items: string[] }) {
   return (
@@ -186,19 +188,46 @@ function MobileMenuPanel({ onClose }: { onClose: () => void }) {
 }
 
 export default function Header() {
+  const pathname = usePathname();
   const [isCompact, setIsCompact] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
+  if (pathname?.startsWith("/dashboard")) {
+    return null;
+  }
+
   useEffect(() => {
-    const handleScroll = () => {
-      setIsCompact(window.scrollY > STICKY_TRIGGER);
+    let rafId: number | null = null;
+
+    const updateCompactState = () => {
+      const scrollY = window.scrollY;
+
+      setIsCompact((prevIsCompact) => {
+        if (prevIsCompact) {
+          return scrollY > COMPACT_EXIT_SCROLL_Y;
+        }
+
+        return scrollY > COMPACT_ENTER_SCROLL_Y;
+      });
     };
 
-    handleScroll();
+    const handleScroll = () => {
+      if (rafId !== null) return;
+
+      rafId = window.requestAnimationFrame(() => {
+        updateCompactState();
+        rafId = null;
+      });
+    };
+
+    updateCompactState();
     window.addEventListener("scroll", handleScroll, { passive: true });
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
+      if (rafId !== null) {
+        window.cancelAnimationFrame(rafId);
+      }
     };
   }, []);
 
