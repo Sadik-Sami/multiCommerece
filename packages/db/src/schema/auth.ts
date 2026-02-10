@@ -5,7 +5,6 @@ import {
   timestamp,
   boolean,
   index,
-  integer,
   uniqueIndex,
 } from "drizzle-orm/pg-core";
 
@@ -19,11 +18,6 @@ export const user = pgTable("user", {
   banned: boolean("banned").default(false),
   banReason: text("ban_reason"),
   banExpires: timestamp("ban_expires"),
-  vendorStatus: text("vendor_status", {
-    enum: ["none", "pending", "approved", "rejected", "suspended"],
-  }).default("none"),
-  vendorApprovedAt: integer("vendor_approved_at"),
-  vendorApprovedBy: text("vendor_approved_by"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at")
     .defaultNow()
