@@ -1,5 +1,5 @@
 {
-  "name": "@multiCommerece/auth",
+  "name": "@multiCommerece/email",
   "type": "module",
   "exports": {
     ".": {
@@ -11,12 +11,8 @@
   },
   "scripts": {},
   "dependencies": {
-    "@multiCommerece/db": "workspace:*",
-    "@multiCommerece/email": "workspace:*",
     "@multiCommerece/env": "workspace:*",
-    "better-auth": "catalog:",
-    "dotenv": "catalog:",
-    "zod": "catalog:"
+    "resend": "^6.9.2"
   },
   "devDependencies": {
     "@multiCommerece/config": "workspace:*",

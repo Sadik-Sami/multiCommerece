@@ -1,5 +1,6 @@
 import { db } from '@multiCommerece/db';
 import * as schema from '@multiCommerece/db/schema/auth';
+import { sendEmail, resetPasswordTemplate, verificationEmailTemplate } from '@multiCommerece/email';
 import { env } from '@multiCommerece/env/server';
 import { betterAuth } from 'better-auth';
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
@@ -21,6 +22,19 @@ export const auth = betterAuth({
 	trustedOrigins: [env.CORS_ORIGIN],
 	emailAndPassword: {
 		enabled: true,
+		disableSignUp: false,
+		minPasswordLength: 8,
+		maxPasswordLength: 128,
+		autoSignIn: true,
+		requireEmailVerification: false,
+		// Password reset email
+		sendResetPassword: async ({ user, url }) => {
+			void sendEmail({
+				to: user.email,
+				subject: 'Reset your password',
+				html: resetPasswordTemplate(url),
+			});
+		},
 	},
 	advanced: {
 		defaultCookieAttributes: {
@@ -29,22 +43,18 @@ export const auth = betterAuth({
 			httpOnly: true,
 		},
 	},
-	user: {
-		additionalFields: {
-			vendorStatus: {
-				type: ['none', 'pending', 'approved', 'rejected', 'suspended'],
-				defaultValue: 'none',
-				input: false,
-			},
-			vendorApprovedAt: {
-				type: 'number',
-				input: false,
-			},
-			vendorApprovedBy: {
-				type: 'string',
-				input: false,
-			},
+	// Email verification
+	emailVerification: {
+		sendVerificationEmail: async ({ user, url }) => {
+			void sendEmail({
+				to: user.email,
+				subject: 'Verify your email',
+				html: verificationEmailTemplate(url),
+			});
 		},
+		sendOnSignUp: true,
+		autoSignInAfterVerification: true,
+		expiresIn: 1000 * 60 * 60 * 24, // 24 hours
 	},
 	plugins: [
 		admin({
