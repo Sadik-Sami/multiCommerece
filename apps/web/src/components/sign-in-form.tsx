@@ -1,23 +1,27 @@
-import { useForm } from "@tanstack/react-form";
-import { useRouter } from "next/navigation";
-import { toast } from "sonner";
-import z from "zod";
+'use client';
 
-import { authClient } from "@/lib/auth-client";
+import Link from 'next/link';
 
-import Loader from "./loader";
-import { Button } from "./ui/button";
-import { Input } from "./ui/input";
-import { Label } from "./ui/label";
+import { useForm } from '@tanstack/react-form';
+import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
+import z from 'zod';
 
-export default function SignInForm({ onSwitchToSignUp }: { onSwitchToSignUp: () => void }) {
+import { authClient } from '@/lib/auth-client';
+
+import Loader from './loader';
+import { Button } from './ui/button';
+import { Input } from './ui/input';
+import { Label } from './ui/label';
+
+export default function SignInForm() {
   const router = useRouter();
   const { isPending } = authClient.useSession();
 
   const form = useForm({
     defaultValues: {
-      email: "",
-      password: "",
+      email: '',
+      password: '',
     },
     onSubmit: async ({ value }) => {
       await authClient.signIn.email(
@@ -27,8 +31,8 @@ export default function SignInForm({ onSwitchToSignUp }: { onSwitchToSignUp: () 
         },
         {
           onSuccess: () => {
-            router.push("/dashboard");
-            toast.success("Sign in successful");
+            router.push('/dashboard');
+            toast.success('Sign in successful');
           },
           onError: (error) => {
             toast.error(error.error.message || error.error.statusText);
@@ -38,8 +42,8 @@ export default function SignInForm({ onSwitchToSignUp }: { onSwitchToSignUp: () 
     },
     validators: {
       onSubmit: z.object({
-        email: z.email("Invalid email address"),
-        password: z.string().min(8, "Password must be at least 8 characters"),
+        email: z.email('Invalid email address'),
+        password: z.string().min(8, 'Password must be at least 8 characters'),
       }),
     },
   });
@@ -49,85 +53,80 @@ export default function SignInForm({ onSwitchToSignUp }: { onSwitchToSignUp: () 
   }
 
   return (
-    <div className="mx-auto w-full mt-10 max-w-md p-6">
-      <h1 className="mb-6 text-center text-3xl font-bold">Welcome Back</h1>
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        form.handleSubmit();
+      }}
+      className='space-y-5'>
+      <form.Field name='email'>
+        {(field) => (
+          <div className='space-y-2'>
+            <Label htmlFor={field.name} className='text-[15px] font-medium text-[#4b5966]'>
+              Email Address*
+            </Label>
+            <Input
+              id={field.name}
+              name={field.name}
+              type='email'
+              placeholder='Enter your email address'
+              value={field.state.value}
+              onBlur={field.handleBlur}
+              onChange={(e) => field.handleChange(e.target.value)}
+              className='h-12 rounded-[5px] border-[#dee2e6] text-[14px]'
+            />
+            {field.state.meta.errors.map((error) => (
+              <p key={error?.message} className='text-sm text-red-500'>
+                {error?.message}
+              </p>
+            ))}
+          </div>
+        )}
+      </form.Field>
 
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          form.handleSubmit();
-        }}
-        className="space-y-4"
-      >
-        <div>
-          <form.Field name="email">
-            {(field) => (
-              <div className="space-y-2">
-                <Label htmlFor={field.name}>Email</Label>
-                <Input
-                  id={field.name}
-                  name={field.name}
-                  type="email"
-                  value={field.state.value}
-                  onBlur={field.handleBlur}
-                  onChange={(e) => field.handleChange(e.target.value)}
-                />
-                {field.state.meta.errors.map((error) => (
-                  <p key={error?.message} className="text-red-500">
-                    {error?.message}
-                  </p>
-                ))}
-              </div>
-            )}
-          </form.Field>
-        </div>
+      <form.Field name='password'>
+        {(field) => (
+          <div className='space-y-2'>
+            <Label htmlFor={field.name} className='text-[15px] font-medium text-[#4b5966]'>
+              Password*
+            </Label>
+            <Input
+              id={field.name}
+              name={field.name}
+              type='password'
+              placeholder='Enter your password'
+              value={field.state.value}
+              onBlur={field.handleBlur}
+              onChange={(e) => field.handleChange(e.target.value)}
+              className='h-12 rounded-[5px] border-[#dee2e6] text-[14px]'
+            />
+            {field.state.meta.errors.map((error) => (
+              <p key={error?.message} className='text-sm text-red-500'>
+                {error?.message}
+              </p>
+            ))}
+          </div>
+        )}
+      </form.Field>
 
-        <div>
-          <form.Field name="password">
-            {(field) => (
-              <div className="space-y-2">
-                <Label htmlFor={field.name}>Password</Label>
-                <Input
-                  id={field.name}
-                  name={field.name}
-                  type="password"
-                  value={field.state.value}
-                  onBlur={field.handleBlur}
-                  onChange={(e) => field.handleChange(e.target.value)}
-                />
-                {field.state.meta.errors.map((error) => (
-                  <p key={error?.message} className="text-red-500">
-                    {error?.message}
-                  </p>
-                ))}
-              </div>
-            )}
-          </form.Field>
-        </div>
+      <div className='text-right text-sm text-[#777777]'>Forgot Password?</div>
 
+      <div className='flex items-center justify-between'>
+        <Link href='/signup' className='text-[14px] text-[#4b5966] hover:text-[#5caf90]'>
+          Create Account?
+        </Link>
         <form.Subscribe>
           {(state) => (
             <Button
-              type="submit"
-              className="w-full"
-              disabled={!state.canSubmit || state.isSubmitting}
-            >
-              {state.isSubmitting ? "Submitting..." : "Sign In"}
+              type='submit'
+              className='h-[37px] rounded-[5px] bg-[#4b5966] px-5 text-[14px] font-semibold text-white hover:bg-[#5c6874]'
+              disabled={!state.canSubmit || state.isSubmitting}>
+              {state.isSubmitting ? 'Submitting...' : 'Login'}
             </Button>
           )}
         </form.Subscribe>
-      </form>
-
-      <div className="mt-4 text-center">
-        <Button
-          variant="link"
-          onClick={onSwitchToSignUp}
-          className="text-indigo-600 hover:text-indigo-800"
-        >
-          Need an account? Sign Up
-        </Button>
       </div>
-    </div>
+    </form>
   );
 }
