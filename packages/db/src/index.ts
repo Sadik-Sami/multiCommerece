@@ -4,3 +4,5 @@ import { drizzle } from 'drizzle-orm/neon-http';
 
 const sql = neon(env.DATABASE_URL);
 export const db = drizzle(sql);
+
+export * from './validator/user.validator';

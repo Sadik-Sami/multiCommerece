@@ -1,7 +1,5 @@
-import { db } from '@multiCommerece/db';
 import type { Context } from 'hono';
-import { eq } from 'drizzle-orm';
-import * as schema from '@multiCommerece/db/schema/auth';
+import { allUsers, changeRole, userById } from '@/services';
 
 /**
  * @api {get} /users Get All Users
@@ -9,7 +7,7 @@ import * as schema from '@multiCommerece/db/schema/auth';
  * @access Private
  */
 export const getAllUsers = async (c: Context) => {
-	const users = await db.select().from(schema.user);
+	const users = await allUsers();
 	return c.json(users);
 };
 
@@ -20,12 +18,7 @@ export const getAllUsers = async (c: Context) => {
  */
 export const getUserById = async (c: Context) => {
 	const id = c.req.param('id');
-	const user = await db
-		.select()
-		.from(schema.user)
-		.where(eq(schema.user.id, id))
-		.limit(1)
-		.then((users) => users[0]);
+	const user = await userById(id);
 	if (!user) {
 		return c.json(
 			{
@@ -37,4 +30,20 @@ export const getUserById = async (c: Context) => {
 		);
 	}
 	return c.json(user);
+};
+
+export const updateRole = async (c: Context) => {
+	const { userId, role }: { userId: string; role: string } = await c.req.json();
+	const updatedUser = await changeRole(userId, role);
+	if (!updatedUser) {
+		return c.json(
+			{
+				success: false,
+				message: 'User not found',
+				error: `No user found with id ${userId}`,
+			},
+			404,
+		);
+	}
+	return c.json(updatedUser);
 };

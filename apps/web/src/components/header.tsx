@@ -32,8 +32,8 @@ const mainNav = [
 
 function Brand() {
   return (
-    <Link href='/' className='inline-flex items-center gap-2 text-[#4b5966]'>
-      <span className='inline-flex size-8 items-center justify-center rounded-md bg-[#5caf90] text-white'>
+    <Link href='/' className='inline-flex items-center gap-2 text-foreground'>
+      <span className='inline-flex size-8 items-center justify-center rounded-md bg-primary text-primary-foreground'>
         <ShoppingBag className='size-5' />
       </span>
       <span className='text-4xl font-bold leading-none'>Grabit</span>
@@ -53,11 +53,11 @@ function AccountLink({
   icon: typeof User;
 }) {
   return (
-    <Link href={href} className='inline-flex items-center gap-2 text-[#4b5966]'>
-      <Icon className='size-5 text-[#4b5966]' />
+    <Link href={href} className='inline-flex items-center gap-2 text-foreground'>
+      <Icon className='size-5 text-muted-foreground' />
       <span className='flex flex-col leading-none'>
-        <span className='text-[11px] font-medium uppercase tracking-[0.2px] text-[#777777]'>{label}</span>
-        <span className='mt-1 text-xs font-semibold uppercase tracking-[0.2px]'>{value}</span>
+        <span className='text-[11px] font-medium uppercase tracking-[0.2px] text-muted-foreground'>{label}</span>
+        <span className='mt-1 text-xs font-semibold uppercase tracking-[0.2px] text-foreground'>{value}</span>
       </span>
     </Link>
   );
@@ -67,9 +67,9 @@ export default function Header() {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
 
   return (
-    <header className='w-full border-y border-[#eeeeee] bg-white'>
-      <div className='border-b border-[#eeeeee] bg-[#f8f8fb]'>
-        <div className='mx-auto hidden h-[42px] w-full max-w-[1600px] items-center justify-between px-4 text-[13px] text-[#777777] lg:flex'>
+    <header className='w-full border-y border-border bg-background'>
+      <div className='border-b border-border bg-muted/40'>
+        <div className='mx-auto hidden h-[42px] w-full max-w-[1600px] items-center justify-between px-4 text-[13px] text-muted-foreground lg:flex'>
           <div className='flex items-center gap-6'>
             <span className='inline-flex items-center gap-2'>
               <Phone className='size-3.5' /> +91 987 654 3210
@@ -80,16 +80,16 @@ export default function Header() {
           </div>
           <p>World&apos;s Fastest Online Shopping Destination</p>
           <div className='flex items-center gap-5'>
-            <Link href='/help' className='hover:text-[#4b5966]'>
+            <Link href='/help' className='hover:text-foreground'>
               Help?
             </Link>
-            <Link href='/tracking' className='hover:text-[#4b5966]'>
+            <Link href='/tracking' className='hover:text-foreground'>
               Track Order?
             </Link>
-            <button className='inline-flex items-center gap-1 hover:text-[#4b5966]' type='button'>
+            <button className='inline-flex items-center gap-1 hover:text-foreground' type='button'>
               English <ChevronDown className='size-3.5' />
             </button>
-            <button className='inline-flex items-center gap-1 hover:text-[#4b5966]' type='button'>
+            <button className='inline-flex items-center gap-1 hover:text-foreground' type='button'>
               Dollar <ChevronDown className='size-3.5' />
             </button>
           </div>
@@ -101,7 +101,7 @@ export default function Header() {
           <Button
             variant='outline'
             size='icon'
-            className='size-10 border-[#dee2e6]'
+            className='size-10 border-border'
             onClick={() => setIsMobileOpen(true)}
             aria-label='Open navigation'>
             <Menu className='size-5' />
@@ -118,11 +118,11 @@ export default function Header() {
             <Input
               type='search'
               placeholder='Search Products...'
-              className='h-[52px] rounded-[5px] border-[#eeeeee] pr-12 text-[14px] placeholder:text-[#777777]'
+              className='h-[52px] rounded-md border-border pr-12 text-sm placeholder:text-muted-foreground'
             />
             <button
               type='button'
-              className='absolute right-3 top-1/2 -translate-y-1/2 text-[#4b5966]'
+              className='absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground'
               aria-label='Search'>
               <Search className='size-5' />
             </button>
@@ -136,11 +136,11 @@ export default function Header() {
         </div>
       </div>
 
-      <div className='hidden border-y border-[#eeeeee] lg:block'>
+      <div className='hidden border-y border-border lg:block'>
         <div className='mx-auto flex h-[62px] w-full max-w-[1600px] items-center px-4'>
           <button
             type='button'
-            className='inline-flex h-[50px] items-center gap-3 rounded-[5px] bg-[#5caf90] px-4 text-[15px] font-medium text-white'>
+            className='inline-flex h-[50px] items-center gap-3 rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground hover:bg-primary/90'>
             <Grid2x2 className='size-4.5' />
             All Categories
             <ChevronDown className='size-4' />
@@ -152,7 +152,7 @@ export default function Header() {
                 key={item.label}
                 href={item.href}
                 className={cn(
-                  'text-[15px] font-medium text-[#4b5966] transition-colors hover:text-[#5caf90]',
+                  'text-sm font-medium text-muted-foreground transition-colors hover:text-primary',
                   item.label === 'Offers' && 'inline-flex items-center gap-1.5',
                 )}>
                 {item.label}
@@ -162,7 +162,7 @@ export default function Header() {
 
           <button
             type='button'
-            className='inline-flex h-[50px] items-center gap-2 rounded-[5px] bg-[#5caf90] px-4 text-[15px] font-medium text-white'>
+            className='inline-flex h-[50px] items-center gap-2 rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground hover:bg-primary/90'>
             <MapPin className='size-4' />
             New York
             <ChevronDown className='size-4' />
@@ -172,7 +172,7 @@ export default function Header() {
 
       {isMobileOpen ? (
         <div className='fixed inset-0 z-50 bg-black/30 lg:hidden' role='dialog' aria-modal='true'>
-          <aside className='h-full w-[86%] max-w-sm bg-white px-4 py-5'>
+          <aside className='h-full w-[86%] max-w-sm bg-background px-4 py-5'>
             <div className='mb-6 flex items-center justify-between'>
               <Brand />
               <Button variant='ghost' size='icon' onClick={() => setIsMobileOpen(false)} aria-label='Close navigation'>
@@ -185,7 +185,7 @@ export default function Header() {
                   key={item.label}
                   href={item.href}
                   onClick={() => setIsMobileOpen(false)}
-                  className='block rounded-md border border-[#eeeeee] px-3 py-2 text-sm font-medium text-[#4b5966]'>
+                  className='block rounded-md border border-border px-3 py-2 text-sm font-medium text-foreground'>
                   {item.label}
                 </Link>
               ))}
