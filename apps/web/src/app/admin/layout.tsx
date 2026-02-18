@@ -7,7 +7,7 @@ import { AppSidebar } from '@/components/app-sidebar';
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
 import { authClient } from '@/lib/auth-client';
 
-export default async function DashboardLayout({ children }: { children: ReactNode }) {
+export default async function AdminLayout({ children }: { children: ReactNode }) {
 	const session = await authClient.getSession({
 		fetchOptions: {
 			headers: await headers(),
@@ -15,7 +15,7 @@ export default async function DashboardLayout({ children }: { children: ReactNod
 		},
 	});
 
-	if (!session?.user) {
+	if (!session?.user.role || session.user.role !== 'admin') {
 		redirect('/login');
 	}
 

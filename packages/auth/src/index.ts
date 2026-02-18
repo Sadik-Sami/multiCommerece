@@ -20,6 +20,15 @@ export const auth = betterAuth({
 		schema: schema,
 	}),
 	trustedOrigins: [env.CORS_ORIGIN],
+	baseURL: env.BETTER_AUTH_URL,
+	user: {
+		additionalFields: {
+			city: { type: 'string', nullable: true, returned: true },
+			country: { type: 'string', nullable: true, returned: true },
+			street: { type: 'string', nullable: true, returned: true },
+			zipCode: { type: 'string', nullable: true, returned: true },
+		},
+	},
 	emailAndPassword: {
 		enabled: true,
 		disableSignUp: false,

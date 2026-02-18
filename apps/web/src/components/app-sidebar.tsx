@@ -46,22 +46,22 @@ const data = {
 			icon: <LayoutDashboardIcon />,
 		},
 		{
-			title: 'Lifecycle',
+			title: 'Users',
 			url: '#',
-			icon: <ListIcon />,
+			icon: <UsersIcon />,
 		},
 		{
-			title: 'Analytics',
+			title: 'Reports',
 			url: '#',
 			icon: <ChartBarIcon />,
 		},
 		{
-			title: 'Projects',
+			title: 'Tickets',
 			url: '#',
 			icon: <FolderIcon />,
 		},
 		{
-			title: 'Team',
+			title: 'Chats',
 			url: '#',
 			icon: <UsersIcon />,
 		},

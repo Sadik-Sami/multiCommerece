@@ -1,3 +1,2 @@
-export * as authSchema from './auth';
-export * as commerceSchema from './commerce';
-
+export * from "./auth";
+export * from "./commerce";
